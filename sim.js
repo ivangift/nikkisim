@@ -7,7 +7,6 @@ function drawNpc() {
     option.value = i;
     dropdown.add(option);
   }
-  changeNpc();
 }
 
 function drawSkill() {
@@ -25,6 +24,7 @@ function drawSkill() {
   });
   $('#playerSkills').on('change', function(evt) {
     validate();
+    updateParam();
   });
   $('#playerSkills').on('selectivity-opening', function(evt) {
     if (getPlayerSkills().length >= 4) {
@@ -34,7 +34,6 @@ function drawSkill() {
 }
 
 function getPlayerSkills() {
-
   var out = [];
   var skills = $('#playerSkills').selectivity("val");
   for (var i in skills) {
@@ -111,11 +110,29 @@ function changeNpc() {
   for (var i in suggestion) {
     $("#playerSuggestion").append(suggestion[i].name + "&nbsp;&nbsp;");
   }
+  updateParam();
 }
 
 function init() {
+  var npc = url("#npc");
+  var skills = url("#skills");
   drawNpc();
   drawSkill();
+  if (npc) {
+    $("#npc").val(npc);
+  }
+  if (skills) {
+    $('#playerSkills').selectivity('clear');
+    $('#playerSkills').selectivity('value', skills.split(","));
+  }
+  changeNpc();
+}
+
+function updateParam() {
+  var npc = $("#npc").val();
+  var skills = $('#playerSkills').selectivity("val").join(",");
+  var param = "npc="+npc + "&skills=" + skills;
+  window.location.href = "#" + param;
 }
 
 function combat(player, sequence, enemy, eventBus, ts, param) {
