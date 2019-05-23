@@ -8,15 +8,38 @@
     <script type='text/javascript' charset="UTF-8" src='sim.js'></script>
     <link rel="stylesheet" href="../../nikkistats/nikki.css">
     <style>
-      div {
-        margin: 0.1em;
-      }
+    hr {
+        border: 0;
+        height: 1px;
+        background: #333;
+        background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    }
+    button {
+        border-radius:5px;
+        border:none;
+        padding:10px 25px;
+        color:#FFF;
+        text-shadow:1px 1px 1px #949494;
+        margin-left:1em
+    }
+    button.give {
+        background-color:#66cc85;
+    }
+    button.give:disabled {
+        background-color:#bbbbbb;
+    }
+    button.no {
+        background-color:#cc7a66;
+    }
     </style>
   </head>
   <body>
     <div id="rule"></div>
-    <button id="give">Give</button> <button id="no">No</button>
+    <hr/>
+    <button id="give" class="give">Give</button> <button id="no" class="no">No</button>
+    <hr/>
     <div id="stats"></div> 
+    <hr/>
     <div id="history"></div> 
   </body>
 </html>
