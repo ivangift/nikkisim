@@ -116,8 +116,12 @@ class Environment {
 }
 
 class Collector {
+  constructor() {
+    this.idx = 0;
+  }
+
   log(stats) {
-    $("#history").prepend(stats);
+    $("#history").prepend((++this.idx) + " " + stats);
   }
 }
 
