@@ -77,10 +77,10 @@ class Environment {
     if (this.challenge == "NONE") {
       return false;
     } else if (this.challenge == "GREEDY") {
-      return this.totalCoin >= 2500;
+      return this.totalCoin > 2500;
     } else if (this.challenge == "CLOTHES") {
       const spent = this.totalCoin - this.coin;
-      return 2500 - 1240 - spent <= 0;
+      return (this.totalCoin > 2500) || (2500 - 1240 - spent <= 0);
     } 
   }
 
