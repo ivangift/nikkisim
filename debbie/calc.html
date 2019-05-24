@@ -1,45 +1,65 @@
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>奇迹暖暖黛奥比模拟器</title>
-    <script type='text/javascript' charset="UTF-8" src='../../nikkistats/jquery.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='../../nikkistats/jquery.collapse.js'></script>
-    <script type='text/javascript' charset="UTF-8" src='sim.js'></script>
-    <link rel="stylesheet" href="../../nikkistats/nikki.css">
-    <style>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>奇迹暖暖黛奥比模拟器</title>
+  <script type='text/javascript' charset="UTF-8" src='../../nikkistats/jquery.js'></script>
+  <script type='text/javascript' charset="UTF-8" src='../../nikkistats/jquery.collapse.js'></script>
+  <script type='text/javascript' charset="UTF-8" src='sim.js'></script>
+  <link rel="stylesheet" href="../../nikkistats/nikki.css">
+  <style>
     hr {
-        border: 0;
-        height: 1px;
-        background: #333;
-        background-image: linear-gradient(to right, #ccc, #333, #ccc);
+      border: 0;
+      height: 1px;
+      background: #333;
+      background-image: linear-gradient(to right, #ccc, #333, #ccc);
     }
+
     button {
-        border-radius:5px;
-        border:none;
-        padding:10px 25px;
-        color:#FFF;
-        text-shadow:1px 1px 1px #949494;
-        margin-left:1em
+      border-radius: 5px;
+      border: none;
+      padding: 10px 25px;
+      color: #FFF;
+      text-shadow: 1px 1px 1px #949494;
+      margin-left: 1em
     }
+
     button.give {
-        background-color:#66cc85;
+      background-color: #66cc85;
     }
-    button.give:disabled {
-        background-color:#bbbbbb;
+
+    button.give:disabled, button.no:disabled {
+      background-color: #bbbbbb;
     }
+
     button.no {
-        background-color:#cc7a66;
+      background-color: #cc7a66;
     }
-    </style>
-  </head>
-  <body>
-    <div id="rule"></div>
-    <hr/>
-    <button id="give" class="give">Give</button> <button id="no" class="no">No</button>
-    <hr/>
-    <div id="stats"></div> 
-    <hr/>
-    <div id="history"></div> 
-  </body>
+
+    button.reset {
+      background-color: #5b5cb6;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    选择挑战
+    <select id="challenge">
+      <option value='NONE'>不挑战</option>
+      <option value='GREEDY'>2500代币，不收集衣服</option>
+      <option value='CLOTHES'>2500代币，收集衣服(剩余代币+可获得代币小于1240时结束)</option>
+    </select>
+    <span id="progress"></span>
+  </div>
+  <div id="rule"></div>
+  <hr />
+  <button id="give" class="give">Give</button> <button id="no" class="no">No</button> <button id="reset" class="reset">Reset</button>
+  <hr />
+  <div id="stats"></div>
+  <hr />
+  <div id="history"></div>
+</body>
+
 </html>

@@ -47,7 +47,9 @@ class Environment {
     this.coinPerStep = 2; // average case
   }
 
-  reset() {
+  reset(challenge) {
+    this.logger.reset();
+    this.challenge = challenge;
     this.step = this.nextStep.roll();
     this.coin = 0;
     this.reward = 0;
@@ -64,11 +66,22 @@ class Environment {
     this.totalCoin += newCoin;
     this.step = 0;
     this.ask = this.nextAsk.roll();
-    this.logger.log(`After ${moved} steps, earned ${newCoin} coins and encountered Debbie<br/>`);
+    this.logger.log(`<font color='grey'>过了 ${moved} 关, 得到 ${newCoin} 个代币后遇到了黛奥比</font><br/>`);
   }
 
   canGive() {
-    return this.ask <= this.coin;
+    return !this.finished() && this.ask <= this.coin;
+  }
+
+  finished() {
+    if (this.challenge == "NONE") {
+      return false;
+    } else if (this.challenge == "GREEDY") {
+      return this.totalCoin >= 2500;
+    } else if (this.challenge == "CLOTHES") {
+      const spent = this.totalCoin - this.coin;
+      return 2500 - 1240 - spent <= 0;
+    } 
   }
 
   decide(give) {
@@ -78,15 +91,16 @@ class Environment {
     }
     if (give && this.canGive()) {
       this.coin -= this.ask;
+      const gives = this.criticalCounter + 1;
       if (this.critical()) {
         this.criticalCoin += this.ask;
-        this.logger.log(`Give ${this.ask} coins to Debbie and get critical hit in return!<br/>`);
+        this.logger.log(`<b>给了 ${this.ask} 代币 (自上次暴击后共 ${gives} 次) 得到了 <font color='red'>暴击</font> 收益!<b><br/>`);
       } else {
-        this.logger.log(`Give ${this.ask} coins to Debbie<br/>`);
+        this.logger.log(`给了 ${this.ask} 代币<br/>`);
       }
     } else {
       // should do nothing
-      this.logger.log(`Didn't give coins to Debbie<br/>`);
+      this.logger.log(`没给<br/>`);
     }
     this.step = this.nextStep.roll();
     this.forward();
@@ -105,13 +119,14 @@ class Environment {
   }
 
   stats() {
-    return `total coins: ${this.totalCoin}, critical coins: ${this.criticalCoin}, 
-    critical rate for given coins: ${this.totalCoin - this.coin == 0 ? 0 : this.criticalCoin/(this.totalCoin - this.coin)},
-    overall critical rate: ${this.criticalCoin/this.totalCoin}`;
+    const spent = this.totalCoin - this.coin;
+    const reward = spent + this.criticalCoin;
+    return `累计代币: ${this.totalCoin}, 触发暴击的代币: ${this.criticalCoin}, 得分: ${reward} `
+     + (this.finished() ? `<font color='red'>游戏结束</font>` : ``);
   }
 
   toString() {
-    return `Current coins: ${this.coin}, Debbie asks: ${this.ask}, ${this.criticalCounter} gives since last critical`;
+    return `目前代币: ${this.coin}, 黛奥比索要: ${this.ask}, 自上次暴击后给了 ${this.criticalCounter} 次`;
   }
 }
 
@@ -120,8 +135,13 @@ class Collector {
     this.idx = 0;
   }
 
-  log(stats) {
-    $("#history").prepend((++this.idx) + " " + stats);
+  log(event) {
+    $("#history").prepend((++this.idx) + " " + event);
+  }
+
+  reset() {
+    this.idx = 0;
+    $("#history").empty();
   }
 }
 
@@ -137,15 +157,37 @@ function onNoGive() {
   refresh();
 }
 
+function onChallenge() {
+  env.reset($("#challenge").val());
+  refresh();
+}
+
+function onReset() {
+  env.reset($("#challenge").val());
+  refresh();
+}
+
 function refresh() {
   $("#rule").text(env);
   $("#give").attr("disabled", !env.canGive());
-  $("#stats").text(env.stats());
+  $("#no").attr("disabled", env.finished());
+  $("#reset").attr("hidden", !env.finished());
+  $("#stats").html(env.stats());
+  if (env.challenge == "NONE") {
+    $("#progress").text("不挑战");
+  } else if (env.challenge == "GREEDY") {
+    $("#progress").text(`剩余可获得代币 ${2500 - env.totalCoin}`);
+  } else if (env.challenge == "CLOTHES") {
+    const spent = env.totalCoin - env.coin;
+    $("#progress").text(`剩余可自由支配代币 ${2500 - 1240 - spent}，用完自动结束，剩余代币用于购买衣服`);
+  }
 }
 
 function init() {
   $("#give").click(onGive);
   $("#no").click(onNoGive);
+  $("#reset").click(onReset);
+  $("#challenge").change(onChallenge);
   env.reset();
   refresh();
 }
