@@ -16,18 +16,19 @@ if (gives < 3) {
 return ask >= 20;
   `,
   'IP收集衣服': `if (coins * 3 > potential && coins*1.3 < quota) return true;
-
-  if (gives < 3) {
-    return ask < 25;
-  }
-  return ask >= 25;  
+if (gives < 3) {
+  return ask < 25;
+}
+return ask >= 25;  
   `,
   '盲目': `return true;`,
 }
 
+const USER_SCRIPT = "userScript";
+
 class NoopCollector {
-  log(event) {}
-  reset() {}
+  log(event) { }
+  reset() { }
 }
 
 const env = new Environment("default", new NoopCollector());
@@ -40,7 +41,7 @@ function genAgent() {
   return new Function("coins", "ask", "gives", "potential", "quota", $("#agentScript").val());
 }
 
-const numFormat = new Intl.NumberFormat("en-US", {useGrouping: false, maximumFractionDigits: 3});
+const numFormat = new Intl.NumberFormat("en-US", { useGrouping: false, maximumFractionDigits: 3 });
 
 function stats(scores) {
   let total = 0;
@@ -49,7 +50,7 @@ function stats(scores) {
   let square = 0;
   scores.forEach(e => {
     total += e;
-    square += e*e;
+    square += e * e;
     if (e > max) {
       max = e;
     }
@@ -58,8 +59,8 @@ function stats(scores) {
     }
   });
   const avg = total / scores.length;
-  const stdev = Math.sqrt(square / scores.length - avg*avg);
-  
+  const stdev = Math.sqrt(square / scores.length - avg * avg);
+
   return `Average: ${numFormat.format(avg)}&#177;${numFormat.format(stdev)}<br/>
     'Max': ${max}<br/>
     'Min': ${min}<br/>`
@@ -89,10 +90,18 @@ function onRun() {
   } catch (e) {
     $("#error").text(e);
   }
+  if ($("#preset").val() == USER_SCRIPT || !localStorage.userScript) {
+    localStorage.userScript = $("#agentScript").val();
+  }
 }
 
 function onPreset() {
-  $("#agentScript").val(_preset[$("#preset").val()]);
+  const option = $("#preset").val();
+  if (option == USER_SCRIPT) {
+    $("#agentScript").val(localStorage.userScript);
+  } else {
+    $("#agentScript").val(_preset[option]);
+  }
 }
 
 function init() {
@@ -104,6 +113,13 @@ function init() {
       .val(key)
     )
   }
+  if (localStorage.userScript) {
+    $("#preset").append($('<option />')
+      .text("用户自定义")
+      .val(USER_SCRIPT)
+      .attr('selected', 'selected'));
+  }
+  onPreset();
   $("#preset").change(onPreset);
 }
 
