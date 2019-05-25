@@ -2,7 +2,8 @@ const _template = `// coins: 现有代币
 // ask: 黛奥比索要代币数
 // gives: 自从上次暴击后已经给过多少次
 // potential: 剩余可获得代币
-// quota: 剩余可自由支配代币
+// quota: 剩余可自由支配代币，不收集衣服的时候没用
+// return true|false，表示给或者不给
 return false;
 `;
 
@@ -13,6 +14,13 @@ if (gives < 3) {
   return ask < 30;
 }
 return ask >= 20;
+  `,
+  'IP收集衣服': `if (coins * 3 > potential && coins*1.3 < quota) return true;
+
+  if (gives < 3) {
+    return ask < 25;
+  }
+  return ask >= 25;  
   `,
   '盲目': `return true;`,
 }
@@ -32,12 +40,16 @@ function genAgent() {
   return new Function("coins", "ask", "gives", "potential", "quota", $("#agentScript").val());
 }
 
+const numFormat = new Intl.NumberFormat("en-US", {useGrouping: false, maximumFractionDigits: 3});
+
 function stats(scores) {
   let total = 0;
   let max = 0;
   let min = 1e99;
+  let square = 0;
   scores.forEach(e => {
     total += e;
+    square += e*e;
     if (e > max) {
       max = e;
     }
@@ -46,18 +58,11 @@ function stats(scores) {
     }
   });
   const avg = total / scores.length;
-  let std = 0;
-  scores.forEach(e => {
-    std += (e - avg) * (e - avg);
-  });
-  std /= scores.length;
-  std = Math.sqrt(std);
-  return {
-    'Average': avg,
-    'Max': max,
-    'Min': min,
-    'Std dev': std
-  };
+  const stdev = Math.sqrt(square / scores.length - avg*avg);
+  
+  return `Average: ${numFormat.format(avg)}&#177;${numFormat.format(stdev)}<br/>
+    'Max': ${max}<br/>
+    'Min': ${min}<br/>`
 }
 
 function doBenchmark(f) {
@@ -73,7 +78,7 @@ function doBenchmark(f) {
     }
     scores.push(env.score());
   }
-  $("#stats").text(JSON.stringify(stats(scores)));
+  $("#stats").html(stats(scores));
 }
 
 function onRun() {
