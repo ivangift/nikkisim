@@ -8,13 +8,13 @@ return false;
 
 const _preset = {
   'Template': _template,
-  'Test1': `if (coins > 40) return true;
-if (gives <= 20) {
-  return ask < 20;
+  'IP不收集衣服': `if (coins * 3 > potential) return true;
+if (gives < 3) {
+  return ask < 30;
 }
-return true;
+return ask >= 20;
   `,
-  'Test2': `return true;`,
+  '盲目': `return true;`,
 }
 
 class NoopCollector {

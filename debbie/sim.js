@@ -47,7 +47,6 @@ function refresh() {
   } else if (env.challenge == "GREEDY") {
     $("#progress").text(`剩余可获得代币 ${env.potential()}`);
   } else if (env.challenge == "CLOTHES") {
-    const spent = env.totalCoin - env.coin;
     $("#progress").text(`剩余可自由支配代币 ${env.quota()}，用完自动结束，剩余代币用于购买衣服`);
   }
 }
