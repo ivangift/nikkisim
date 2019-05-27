@@ -15,11 +15,11 @@ if (gives < 2) {
 }
 return ask >= 18;
   `,
-  'IP收集衣服': `if (coins * 3 > potential && coins*1.3 < quota) return true;
+  'IP收集衣服': `if (quota >= potential + ask) return true;
 if (gives < 2) {
-  return ask <= 18;
+  return ask <=18;
 }
-return ask >= 24;  
+return ask >=24;    
   `,
   '盲目': `return true;`,
 }
