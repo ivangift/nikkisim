@@ -81,7 +81,6 @@ class Environment {
     } else if (this.challenge == "GREEDY") {
       return this.potential() < 0;
     } else if (this.challenge == "CLOTHES") {
-      const spent = this.totalCoin - this.coin;
       return this.potential() < 0 || (this.quota() <= 0);
     }
   }

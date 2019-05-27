@@ -10,13 +10,13 @@ return false;
 const _preset = {
   'Template': _template,
   'IP不收集衣服': `if (coins * 3 > potential) return true;
-if (gives < 3) {
+if (gives < 2) {
   return ask < 30;
 }
 return ask >= 20;
   `,
   'IP收集衣服': `if (coins * 3 > potential && coins*1.3 < quota) return true;
-if (gives < 3) {
+if (gives < 2) {
   return ask < 25;
 }
 return ask >= 25;  
