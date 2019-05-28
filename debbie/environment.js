@@ -68,7 +68,7 @@ class Environment {
     this.totalCoin += newCoin;
     this.step = 0;
     this.ask = this.nextAsk.roll();
-    this.logger.log(`<font color='grey'>过了 ${moved} 关, 得到 ${newCoin} 个代币后遇到了黛奥比</font><br/>`);
+    this.logger.log(`<font color='grey'>过了 ${moved} 关, 得到 ${newCoin} 个代币后遇到了黛奥比 (剩余可获得代币${this.potential()})</font><br/>`);
   }
 
   canGive() {
@@ -93,11 +93,15 @@ class Environment {
     if (give && this.canGive()) {
       this.coin -= this.ask;
       const gives = this.criticalCounter + 1;
+      let quotaInfo = "";
+      if (this.challenge == "CLOTHES") {
+        quotaInfo = `, 剩余可支配代币${this.quota()}`;
+      }
       if (this.critical()) {
         this.criticalCoin += this.ask;
-        this.logger.log(`<b>给了 ${this.ask} 代币 (自上次暴击后共 ${gives} 次) 得到了 <font color='red'>暴击</font> 收益!<b><br/>`);
+        this.logger.log(`<b>给了 ${this.ask} 代币 (自上次暴击后共 ${gives} 次) 得到了 <font color='red'>暴击</font> 收益!<b> (总分${this.score()}${quotaInfo})<br/>`);
       } else {
-        this.logger.log(`给了 ${this.ask} 代币<br/>`);
+        this.logger.log(`给了 ${this.ask} 代币 (总分${this.score()}${quotaInfo})<br/>`);
       }
     } else {
       // should do nothing

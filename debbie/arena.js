@@ -26,12 +26,13 @@ return ask >=24;
 
 const USER_SCRIPT = "userScript";
 
-class NoopCollector {
-  log(event) { }
-  reset() { }
+class SampleCollector {
+  log(event) { this.logs.push(event); }
+  reset() { this.logs = []; }
 }
 
-const env = new Environment("default", new NoopCollector());
+const logger = new SampleCollector()
+const env = new Environment("default", logger);
 
 function noop() {
   return false;
@@ -80,6 +81,7 @@ function doBenchmark(f) {
     scores.push(env.score());
   }
   $("#stats").html(stats(scores));
+  $("#history").html(logger.logs.join(''));
 }
 
 function onRun() {
