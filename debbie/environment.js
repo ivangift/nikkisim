@@ -134,7 +134,10 @@ class Environment {
 
   quota() {
     const spent = this.totalCoin - this.coin;
-    return this.coinCap - this.clothesPrice - spent;
+    if (this.challenge == "CLOTHES") {
+      return this.coinCap - this.clothesPrice - spent;
+    }
+    return this.coinCap - spent;
   }
 
   stats() {
