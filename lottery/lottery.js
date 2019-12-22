@@ -1,12 +1,24 @@
+class Item {
+  constructor(name, category) {
+    this.name = name;
+    this.category = category;
+  }
+
+  toString() {
+    return this.name;
+  }
+}
+
 class Lottery {
   /**
    * @param {string} name of the pool
-   * @param {number} num of items in the pool
+   * @param {Array} items in the pool
    * @param {number} prob that the pool to be drawn
    */
-  constructor(name, num, prob) {
+  constructor(name, items, prob) {
     this.name = name;
-    this.num = num;
+    this.items = items;
+    this.num = items.length;
     this.prob = prob;
   }
 
@@ -15,7 +27,7 @@ class Lottery {
    * @return the index of drawn item, starting from 0 
    */
   draw() {
-    return Math.floor(Math.random() * this.num);
+    return this.items[Math.floor(Math.random() * this.num)];
   }
 
   /**
@@ -63,11 +75,25 @@ class Lottery {
   }
 }
 
-class Simulator {
+class Roulette {
   /**
-   * @param {List} lotteries the list of Lottery
+   * @param {Lottery[]} lotteries to draw
    */
   constructor(lotteries) {
+    this.name = name;
     this.lotteries = lotteries;
+    this.prob = 0;
+    lotteries.forEach(v => {this.prob += v.prob});
+  }
+
+  // naive selection
+  draw() {
+    let p = Math.random() * this.prob;
+    for (let i in this.lotteries) {
+      if (p < this.lotteries[i].prob) {
+        return this.lotteries[i].draw();
+      }
+      p -= this.lotteries[i].prob;
+    }
   }
 }
