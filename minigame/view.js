@@ -132,7 +132,7 @@ class Summary extends React.Component {
     const items = this.props.prog.getUniqueItems();
     const total = this.props.prog.getPoolSize();
     return e(
-      'div',
+      'summary',
       null,
       `总次数${count} 已获得 ${items} / ${total}`
     );
@@ -171,10 +171,8 @@ class SummaryCard extends React.Component {
       lots.push(e(LotteryInfoView, {lottery: this.props.inventory.lotteries[i]}));
     }
     return e(
-      'div',
-      {
-        className: "mdc-card"
-      },
+      'details',
+      null,
       e(Summary, { prog: this.props.inventory.total }),
       lots
     );
