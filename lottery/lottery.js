@@ -1,14 +1,3 @@
-class Item {
-  constructor(name, category) {
-    this.name = name;
-    this.category = category;
-  }
-
-  toString() {
-    return this.name;
-  }
-}
-
 class Lottery {
   /**
    * @param {string} name of the pool
@@ -45,7 +34,7 @@ class Lottery {
   }
 
   /**
-   * Calculates the percentile when draw n rounds to collect all items. 
+   * Calculates the percentile when draw n rounds to collect all items.
    * @return an array, a[n] means the population that have collected all items after n draws
    */
   percentile() {
@@ -65,7 +54,7 @@ class Lottery {
     return ret;
   }
 
-  // returns the probabilty to draw a new item given i already collected ones
+  /** @return the probabilty to draw a new item given i already collected ones */
   newProb(i) {
     return this.prob * (1 - 1.0 * i / this.num);
   }
@@ -86,7 +75,7 @@ class Roulette {
     lotteries.forEach(v => {this.prob += v.prob});
   }
 
-  // naive selection
+  // naive selection, for more sophisticate solutions please see http://www.keithschwarz.com/darts-dice-coins/
   draw() {
     let p = Math.random() * this.prob;
     for (let i in this.lotteries) {

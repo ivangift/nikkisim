@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../lottery/lottery.js"></script>
+    <!--
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>  
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>  
+
+    -->
+    <script src="react.production.min.js"></script>
+    <script src="react-dom.production.min.js"></script>  
+    <link href="material-components-web.min.css" rel="stylesheet">
+    <script src="material-components-web.min.js"></script>  
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style> 
+      .card-content {
+        padding: 4px;
+      }
+      .mdc-image-list__label {
+        font-size:small;
+      }
+      .r {
+        border: solid;
+        border-width: 4px;
+      }
+      .ani {
+        animation: pop 0.2s ease-out both
+      }
+      .r1 {
+        border-color: Chocolate;
+      }
+      .r2 {
+        border-color: Silver;
+      }
+      .r3 {
+        border-color: Gold;
+      }
+      @keyframes pop {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      
+
+      .wrap-collabsible {
+  margin-bottom: 1.2rem 0;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.lbl-toggle {
+  display: block;
+
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  text-align: center;
+
+  padding: 1rem;
+
+  color: #A77B0E;
+  background: #FAE042;
+
+  cursor: pointer;
+
+  border-radius: 7px;
+  transition: all 0.25s ease-out;
+}
+
+.lbl-toggle:hover {
+  color: #7C5A0B;
+}
+
+.lbl-toggle::before {
+  content: ' ';
+  display: inline-block;
+
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid currentColor;
+  vertical-align: middle;
+  margin-right: .7rem;
+  transform: translateY(-2px);
+
+  transition: transform .2s ease-out;
+}
+
+.toggle:checked + .lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+}
+
+.collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: 100vh;
+}
+
+.toggle:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.collapsible-content .content-inner {
+  background: rgba(250, 224, 66, .2);
+  border-bottom: 1px solid rgba(250, 224, 66, .45);
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: .5rem 1rem;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="summary"></div>
+    <div id="button_container" class='mdc-card'></div>
+    <div id="loot"></div>
+    <script src="model.js"></script>
+    <script src="view.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>
